@@ -1,0 +1,49 @@
+pwd : get where you standing now
+
+ls [attributes] : list all files and folders
+
+atrributes:
+-l: long listing
+-F: put a symbol in the end of folders[/] and link files[@] and nothing in noraml files
+-a: show hidden files
+you can put more that 1 attribute in the command
+
+mkdir [folder name]: make a folder with a name
+rmdir [folder name]: remove a folder
+
+touch [file name]: create new empty file
+
+rm [file name with his extension]: remove a file
+rm -f [file name with his extension]: forcly remove a file
+
+cd [folder name]: go to a folder
+folder name can be absolute or just his name if it's in the same place as pwd command tells
+
+cd .. : go up to the perant folder
+this command change where you are standing, use pwd to know where you standing
+
+
+chmod: is the command for changing the permissions
+chmod [3 numbers] [file or folder name]
+first number is for the user, second number is for the group and the third number is for others
+
+numbers:
+0 = no permission
+1 execute
+2 write
+3 execute + write
+4 read
+5 read+execute
+6 read+write
+7 read+write+execute
+
+put the file or folder name in ' ' to avoid the space error in commands
+
+
+ln: create a symboli link to files or folders
+ln -s [source file or folder] [link name]
+-s means it's a soft link
+you can add -f or --force if there is a file with the same name of the link file
+THIS WILL OVERWRITE THE EXISTING FILE, BE CAREFULL
+
+
