@@ -1,7 +1,7 @@
 
 package filemanagerjava;
 import java.io.*;
-public class Control
+public final class Control
 {
     public static void create(String fileName, boolean file) throws IOException
     {
@@ -33,5 +33,12 @@ public class Control
     {
         Foundation.run("chmod", permission, fileName);
         Foundation.getFiles(false);
+    }
+    
+    public static String getCurrentPlace() throws IOException
+    {
+        StringBuilder output = new StringBuilder(Foundation.run("pwd"));
+        output.delete(output.length()-4, output.length());
+        return output.toString();
     }
 }
