@@ -57,7 +57,11 @@ public class Foundation
                 }
                 Files.add(newFile);
             }
-            String output2 = run("ls");
+            String output2;
+            if(hidden)
+                output2 = run("ls", "-a");
+            else
+                output2 = run("ls");
             String []newOutput2 = output2.split("null");
             for(int f = 0; f < newOutput2.length; f++)
             {
