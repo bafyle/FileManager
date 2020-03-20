@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.ArrayList;
 import javax.swing.*;
 import GUI.*;
+
 public class Main
 {
     
@@ -25,5 +26,6 @@ public class Main
         
         mainFrame.add(mg.run());
         mainFrame.setVisible(true);
+        
     }
 }

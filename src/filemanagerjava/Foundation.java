@@ -66,6 +66,8 @@ public class Foundation
             for(int f = 0; f < newOutput2.length; f++)
             {
                 Files.get(f).name = newOutput2[f];
+                if(newOutput2[f].charAt(0) == '.')
+                    Files.get(f).hidden = true;
             }
         }
         catch(IOException e)

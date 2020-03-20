@@ -1,7 +1,7 @@
 
 package filemanagerjava;
 import java.io.*;
-public final class Control
+public class Control
 {
     public static void create(String fileName, boolean file) throws IOException
     {
@@ -11,7 +11,7 @@ public final class Control
         }
         else
             Foundation.run("mkdir", fileName);
-        Foundation.getFiles(false);
+        Foundation.getFiles(true);
     }
     public static void delete(String fileName, boolean file) throws IOException
     {
@@ -21,18 +21,18 @@ public final class Control
         }
         else
             Foundation.run("rmdir", fileName);
-        Foundation.getFiles(false);
+        Foundation.getFiles(true);
     }
     public static void createLink(String fileName, String source) throws IOException
     {
         Foundation.run("ln", "-s", source, fileName);
-        Foundation.getFiles(false);
+        Foundation.getFiles(true);
     }
     
     public static void changePermission(String fileName, String permission) throws IOException
     {
         Foundation.run("chmod", permission, fileName);
-        Foundation.getFiles(false);
+        Foundation.getFiles(true);
     }
     
     public static String getCurrentPlace() throws IOException
