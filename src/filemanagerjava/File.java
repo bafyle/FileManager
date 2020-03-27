@@ -8,7 +8,7 @@ public class File
     public String permissions;
     public int type;
     public boolean hidden;
-    File()
+    public File()
     {
         name = "";
         permissions = "";
