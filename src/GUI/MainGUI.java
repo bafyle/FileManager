@@ -16,6 +16,7 @@ public class MainGUI
         returningModel.addColumn("Name");
         returningModel.addColumn("Permissions");
         returningModel.addColumn("Type");
+        returningModel.addColumn("Hidden");
         for(File s : Foundation.Files)
         {
             String type = null;
@@ -33,7 +34,12 @@ public class MainGUI
                 default:
                     type = "Unknown";
             }
-            String []row = {s.name, s.permissions, type};
+            String hidden = null;
+            if(s.hidden)
+                hidden = "Yes";
+            else
+                hidden = "No";
+            String []row = {s.name, s.permissions, type, hidden};
             returningModel.addRow(row);
         }
         return returningModel;
@@ -44,7 +50,9 @@ public class MainGUI
         mainPanel.setLayout(null);
         mainPanel.setSize(FIXED_DIMENSION);
         
+        // Files Table 
         JTable filesTable = new JTable(refreshTable());
+        filesTable.setDefaultEditor(Object.class, null);
         filesTable.setBounds(10, 10, 780, 300);
         java.io.File fontFile = new java.io.File("fonts/consolab.ttf");
         Font f = null;
@@ -65,6 +73,31 @@ public class MainGUI
         sp.setBounds(10, 10, 780, 300);
         mainPanel.add(sp);
         
+        // Buttons
+        int x = 170;
+        JButton addFileBtn = new JButton("Create new file");
+        addFileBtn.setBounds(10 +x, 350, 200, 25);
+        mainPanel.add(addFileBtn);
+        
+        JButton delFileBtn = new JButton("Delete file");
+        delFileBtn.setBounds(220+x, 350, 200, 25);
+        mainPanel.add(delFileBtn);
+        
+        JButton addDirBtn = new JButton("Create new directory");
+        addDirBtn.setBounds(10+x, 400, 200, 25);
+        mainPanel.add(addDirBtn);
+        
+        JButton delDirBtn = new JButton("Delete directory");
+        delDirBtn.setBounds(220+x, 400, 200, 25);
+        mainPanel.add(delDirBtn);
+        
+        JButton addlnkeBtn = new JButton("Create a link file");
+        addlnkeBtn.setBounds(10+x, 450, 200, 25);
+        mainPanel.add(addlnkeBtn);
+        
+        JButton chngPerm = new JButton("Change Permission");
+        chngPerm.setBounds(220+x, 450, 200, 25);
+        mainPanel.add(chngPerm);
         
         return mainPanel;
     }

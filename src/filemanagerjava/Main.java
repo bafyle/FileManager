@@ -26,6 +26,5 @@ public class Main
         
         mainFrame.add(mg.run());
         mainFrame.setVisible(true);
-        
     }
 }
