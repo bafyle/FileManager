@@ -1,14 +1,17 @@
 package GUI;
+import filemanagerjava.Control;
 import filemanagerjava.Foundation;
 import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
 import filemanagerjava.File;
+import java.awt.event.ActionEvent;
 import java.io.*;
 
 public class MainGUI
 {
     public final static Dimension FIXED_DIMENSION = new Dimension(800, 600);
+    public JTable filesTable;
     private DefaultTableModel refreshTable()
     {
         DefaultTableModel returningModel = new DefaultTableModel();
@@ -17,7 +20,7 @@ public class MainGUI
         returningModel.addColumn("Permissions");
         returningModel.addColumn("Type");
         returningModel.addColumn("Hidden");
-        for(File s : Foundation.Files)
+        for(File s : Foundation.Files) 
         {
             String type = null;
             switch(s.type)
@@ -51,7 +54,7 @@ public class MainGUI
         mainPanel.setSize(FIXED_DIMENSION);
         
         // Files Table 
-        JTable filesTable = new JTable(refreshTable());
+        filesTable = new JTable(refreshTable());
         filesTable.setDefaultEditor(Object.class, null);
         filesTable.setBounds(10, 10, 780, 300);
         java.io.File fontFile = new java.io.File("fonts/consolab.ttf");
@@ -77,6 +80,7 @@ public class MainGUI
         int x = 170;
         JButton addFileBtn = new JButton("Create new file");
         addFileBtn.setBounds(10 +x, 350, 200, 25);
+        
         mainPanel.add(addFileBtn);
         
         JButton delFileBtn = new JButton("Delete file");
