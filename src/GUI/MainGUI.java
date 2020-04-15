@@ -12,6 +12,10 @@ public class MainGUI
 {
     public final static Dimension FIXED_DIMENSION = new Dimension(800, 600);
     public JTable filesTable;
+    private void showError(JPanel mainPanel, String errorMessage)
+    {
+        JOptionPane.showConfirmDialog(mainPanel, errorMessage, "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+    }
     private DefaultTableModel refreshTable()
     {
         DefaultTableModel returningModel = new DefaultTableModel();
@@ -80,7 +84,24 @@ public class MainGUI
         int x = 170;
         JButton addFileBtn = new JButton("Create new file");
         addFileBtn.setBounds(10 +x, 350, 200, 25);
-        
+        addFileBtn.addActionListener((ActionEvent e)->
+        {
+            String fileName = JOptionPane.showInputDialog(mainPanel, "Enter the file name");
+            if(fileName != null)
+            {
+                if(!Foundation.isExist(fileName))
+                {
+                    try{
+                    Control.create(fileName, true);
+                    filesTable.setModel(refreshTable());
+                    }
+                    catch(IOException error){}
+                }
+                else
+                    showError(mainPanel, "File already exists");
+                
+            }
+        });
         mainPanel.add(addFileBtn);
         
         JButton delFileBtn = new JButton("Delete file");
