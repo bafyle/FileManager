@@ -122,6 +122,107 @@ public class MainGUI
         
         JButton chngPerm = new JButton("Change Permission");
         chngPerm.setBounds(220+x, 450, 200, 25);
+        chngPerm.addActionListener((ActionEvent e)->
+        {
+            if(filesTable.getSelectedRow() == -1)
+            {
+                JOptionPane.showConfirmDialog(mainPanel, "Please select a row from the table", "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+            }
+            else
+            {
+                String fileName = filesTable.getValueAt(filesTable.getSelectedRow(), 0).toString();
+                JFrame innerFrame = new JFrame("Change permissions for " + fileName);
+                innerFrame.setSize(450, 230);
+                innerFrame.setLayout(null);
+                innerFrame.setResizable(false);
+                innerFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                
+                JLabel l1 = new JLabel("Permissions for user:   ");
+                l1.setBounds(10, 10, 200, 30);
+                innerFrame.add(l1);
+                
+                JLabel l2 = new JLabel("Permissions for groups: ");
+                l2.setBounds(10, 60, 200, 30);
+                innerFrame.add(l2);
+                
+                JLabel l3 = new JLabel("Permissions for others: ");
+                l3.setBounds(10, 110, 200, 30);
+                innerFrame.add(l3);
+                String []data = {"None", "Read-only", "Read-Write", "Read-Write-Execute" };
+                
+                JComboBox box1 = new JComboBox(data);
+                box1.setBounds(200, 10, 150, 30);
+                JComboBox box2 = new JComboBox(data);
+                box2.setBounds(200, 60, 150, 30);
+                JComboBox box3 = new JComboBox(data);
+                box3.setBounds(200, 110, 150, 30);
+                innerFrame.add(box1);
+                innerFrame.add(box2);
+                innerFrame.add(box3);
+                innerFrame.setVisible(true);
+                
+                JButton okBtn = new JButton("OK");
+                okBtn.setBounds(150, 160, 80, 30);
+                innerFrame.add(okBtn);
+                
+                okBtn.addActionListener((ActionEvent ee)->
+                {
+                    String perm = "";
+                    switch(box1.getSelectedIndex())
+                    {
+                        case 0:
+                            perm += "0";
+                            break;
+                        case 1:
+                            perm += "4";
+                            break;
+                        case 2:
+                            perm += "6";
+                            break;
+                        case 3:
+                            perm += "7";
+                    }
+                    switch(box2.getSelectedIndex())
+                    {
+                        case 0:
+                            perm += "0";
+                            break;
+                        case 1:
+                            perm += "4";
+                            break;
+                        case 2:
+                            perm += "6";
+                            break;
+                        case 3:
+                            perm += "7";
+                    }
+                    switch(box3.getSelectedIndex())
+                    {
+                        case 0:
+                            perm += "0";
+                            break;
+                        case 1:
+                            perm += "4";
+                            break;
+                        case 2:
+                            perm += "6";
+                            break;
+                        case 3:
+                            perm += "7";
+                    }
+                    try
+                    {
+                        Control.changePermission(fileName, perm);
+                        filesTable.setModel(refreshTable());
+                    }
+                    catch(IOException error)
+                    {
+                        
+                    }
+                    innerFrame.dispose();
+                });
+            }
+        });
         mainPanel.add(chngPerm);
         
         return mainPanel;
