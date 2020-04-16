@@ -7,6 +7,8 @@ import java.awt.*;
 import filemanagerjava.File;
 import java.awt.event.ActionEvent;
 import java.io.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class MainGUI
 {
@@ -107,6 +109,34 @@ public class MainGUI
         JButton delFileBtn = new JButton("Delete file");
         delFileBtn.setBounds(220+x, 350, 200, 25);
         mainPanel.add(delFileBtn);
+
+        delFileBtn.addActionListener((ae) -> {
+            
+            int i = filesTable.getSelectedRow();
+            if(i >= 0){
+                
+                String fileName = (String) filesTable.getValueAt(i, 0);
+                String per = (String) filesTable.getValueAt(i, 1);
+                
+                if(per.charAt(0) != 'd'){
+                    int y_n = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this file ?","Delete file",JOptionPane.YES_NO_OPTION);
+                    if(y_n == 0){
+                        try {
+                            Control.delete(fileName, true);
+                            filesTable.setModel(refreshTable());
+                        } catch (IOException ex) {
+                            Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }else{
+                        
+                    }
+                 }else{
+                    showError(mainPanel, "sorry ! You should select file not directory  ");
+                }
+            }else{
+                showError(mainPanel, "please select the file ");
+            }
+        });
         
         JButton addDirBtn = new JButton("Create new directory");
         addDirBtn.setBounds(10+x, 400, 200, 25);
@@ -115,6 +145,36 @@ public class MainGUI
         JButton delDirBtn = new JButton("Delete directory");
         delDirBtn.setBounds(220+x, 400, 200, 25);
         mainPanel.add(delDirBtn);
+        
+        delDirBtn.addActionListener((ae) -> {
+            
+            int i = filesTable.getSelectedRow();
+            if(i >= 0){
+                
+                String fileName = (String) filesTable.getValueAt(i, 0);
+                String per = (String) filesTable.getValueAt(i, 1);
+                
+                
+                if(per.charAt(0) == 'd'){
+                    int y_n = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this folder ?","Delete folder",JOptionPane.YES_NO_OPTION);
+                    if(y_n == 0){
+                        try {
+                            Control.delete(fileName, false);
+                            filesTable.setModel(refreshTable());
+                        } catch (IOException ex) {
+                            Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }else{
+                        
+                    }
+                        
+                 }else{
+                    showError(mainPanel, "sorry ! You should select directory not file  ");
+                }
+            }else{
+                showError(mainPanel, "please select the directory ");
+            }
+        });
         
         JButton addlnkeBtn = new JButton("Create a link file");
         addlnkeBtn.setBounds(10+x, 450, 200, 25);
