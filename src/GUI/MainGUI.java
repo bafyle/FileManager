@@ -119,7 +119,7 @@ public class MainGUI
                 String per = (String) filesTable.getValueAt(i, 1);
                 
                 if(per.charAt(0) != 'd'){
-                    int y_n = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this file ?","Delete file",JOptionPane.YES_NO_OPTION);
+                    int y_n = JOptionPane.showConfirmDialog(mainPanel, "Are you sure you want to delete this file ?","Delete file",JOptionPane.YES_NO_OPTION);
                     if(y_n == 0){
                         try {
                             Control.delete(fileName, true);
@@ -156,7 +156,7 @@ public class MainGUI
                 
                 
                 if(per.charAt(0) == 'd'){
-                    int y_n = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this folder ?","Delete folder",JOptionPane.YES_NO_OPTION);
+                    int y_n = JOptionPane.showConfirmDialog(mainPanel, "Are you sure you want to delete this folder ?","Delete folder",JOptionPane.YES_NO_OPTION);
                     if(y_n == 0){
                         try {
                             Control.delete(fileName, false);
