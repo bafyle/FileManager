@@ -108,91 +108,75 @@ public class MainGUI
         
         JButton delFileBtn = new JButton("Delete file");
         delFileBtn.setBounds(220+x, 350, 200, 25);
-        mainPanel.add(delFileBtn);
-
-        delFileBtn.addActionListener((ae) -> {
-            
-            int i = filesTable.getSelectedRow();
-            if(i >= 0){
-                
-                String fileName = (String) filesTable.getValueAt(i, 0);
-                String per = (String) filesTable.getValueAt(i, 1);
-                
-                if(per.charAt(0) != 'd'){
-                    int y_n = JOptionPane.showConfirmDialog(mainPanel, "Are you sure you want to delete this file ?","Delete file",JOptionPane.YES_NO_OPTION);
-                    if(y_n == 0){
-                        try {
-                            Control.delete(fileName, true);
-                            filesTable.setModel(refreshTable());
-                        } catch (IOException ex) {
-                            Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    }else{
-                        
+        delFileBtn.addActionListener((ActionEvent e)->
+        {
+            if(filesTable.getSelectedRow() == -1)
+            {
+                JOptionPane.showConfirmDialog(mainPanel, "Please selecte a file from the table", "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+            }
+            else
+            {
+                String perm = filesTable.getValueAt(filesTable.getSelectedRow(), 1).toString();
+                if(perm.charAt(0) == 'd')
+                    showError(mainPanel, "Please select a file from the table.");
+                else
+                {
+                    String fileName = filesTable.getValueAt(filesTable.getSelectedRow(), 0).toString();
+                    int option = JOptionPane.showConfirmDialog(mainPanel, "Are you sure you want to delete " + fileName, "", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                    if(option == 0)
+                    {
+                        try{Control.delete(fileName, true);}catch(IOException error){Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, error);}
+                        filesTable.setModel(refreshTable());
                     }
-                 }else{
-                    showError(mainPanel, "sorry ! You should select file not directory  ");
                 }
-            }else{
-                showError(mainPanel, "please select the file ");
             }
         });
-        
+        mainPanel.add(delFileBtn);
+
         JButton addDirBtn = new JButton("Create new directory");
         addDirBtn.setBounds(10+x, 400, 200, 25);
-         addFileBtn.addActionListener((ActionEvent e)->
+        addDirBtn.addActionListener((ActionEvent e)->
         {
-            String directoryName = JOptionPane.showInputDialog(mainPanel, "Enter the directory name");
-            if(directoryName != null)
+            String fileName = JOptionPane.showInputDialog(mainPanel, "Enter the file name");
+            if(fileName != null)
             {
-                if(!Foundation.isExist(directoryName))
+                if(!Foundation.isExist(fileName))
                 {
-                    try{
-                    Control.create(directoryName, true);
+                    try{Control.create(fileName, false);}catch(IOException error){}
                     filesTable.setModel(refreshTable());
-                    }
-                    catch(IOException error){}
                 }
                 else
-                    showError(mainPanel, "directory already exists");
-                
+                    JOptionPane.showConfirmDialog(mainPanel, "Directory already exist", "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
             }
         });
         mainPanel.add(addDirBtn);
         
         JButton delDirBtn = new JButton("Delete directory");
         delDirBtn.setBounds(220+x, 400, 200, 25);
-        mainPanel.add(delDirBtn);
-        
-        delDirBtn.addActionListener((ae) -> {
-            
-            int i = filesTable.getSelectedRow();
-            if(i >= 0){
-                
-                String fileName = (String) filesTable.getValueAt(i, 0);
-                String per = (String) filesTable.getValueAt(i, 1);
-                
-                
-                if(per.charAt(0) == 'd'){
-                    int y_n = JOptionPane.showConfirmDialog(mainPanel, "Are you sure you want to delete this folder ?","Delete folder",JOptionPane.YES_NO_OPTION);
-                    if(y_n == 0){
-                        try {
-                            Control.delete(fileName, false);
-                            filesTable.setModel(refreshTable());
-                        } catch (IOException ex) {
-                            Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    }else{
-                        
+        delDirBtn.addActionListener((ActionEvent e)->
+        {
+            if(filesTable.getSelectedRow() == -1)
+            {
+                JOptionPane.showConfirmDialog(mainPanel, "Please selecte a directory from the table", "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+            }
+            else
+            {
+                String perm = filesTable.getValueAt(filesTable.getSelectedRow(), 1).toString();
+                if(perm.charAt(0) != 'd')
+                    showError(mainPanel, "Please select a directory from the table.");
+                else
+                {
+                    String fileName = filesTable.getValueAt(filesTable.getSelectedRow(), 0).toString();
+                    int option = JOptionPane.showConfirmDialog(mainPanel, "Are you sure you want to delete " + fileName, "", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                    if(option == 0)
+                    {
+                        try{Control.delete(fileName, false);}catch(IOException error){Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, error);}
+                        filesTable.setModel(refreshTable());
                     }
-                        
-                 }else{
-                    showError(mainPanel, "sorry ! You should select directory not file  ");
                 }
-            }else{
-                showError(mainPanel, "please select the directory ");
             }
         });
+        mainPanel.add(delDirBtn);
         
         JButton addlnkeBtn = new JButton("Create a link file");
         addlnkeBtn.setBounds(10+x, 450, 200, 25);
