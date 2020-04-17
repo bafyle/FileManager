@@ -140,6 +140,24 @@ public class MainGUI
         
         JButton addDirBtn = new JButton("Create new directory");
         addDirBtn.setBounds(10+x, 400, 200, 25);
+         addFileBtn.addActionListener((ActionEvent e)->
+        {
+            String directoryName = JOptionPane.showInputDialog(mainPanel, "Enter the directory name");
+            if(directoryName != null)
+            {
+                if(!Foundation.isExist(directoryName))
+                {
+                    try{
+                    Control.create(directoryName, true);
+                    filesTable.setModel(refreshTable());
+                    }
+                    catch(IOException error){}
+                }
+                else
+                    showError(mainPanel, "directory already exists");
+                
+            }
+        });
         mainPanel.add(addDirBtn);
         
         JButton delDirBtn = new JButton("Delete directory");
