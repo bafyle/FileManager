@@ -1,0 +1,33 @@
+.\" Manpage for File Manager.
+.\" Contact androw230@gmail.com to correct errors or typos.
+.TH man 8 "13 Mar 2020" "1.0" "File Manager man page"
+.SH NAME
+File Manager
+.SH DESCRIPTION
+File Manager is used to manage the files and directories in linux using graphical user interface (GUI) in Java programming language.
+.br
+It's using the terminal commands in order to add or delete files or directories.
+.SH TERMINAL COMMANDS
+touch [File Name]: is for creating new file.
+.br
+mkdir [Folder Name]: is for creating new directory.
+.br
+rm [File Name]: is for deleting an existing file.
+.br
+rmdir [Folder Name]: is for deleting an existing directory.
+.br
+ln -s [Source File] [Link File Name]: is for creating a link file which directs to the source file.
+.br
+chmod [Permission Numbers] [File Name]:  is for changing User, group or others permissions for a file.
+.SH BUGS
+Change permission button can be pressed multiple times.
+.SH AUTHORS
+Ebram Nasser 20180007 (GUI, Implementing the creation of files and directories)
+.br
+Uanna Phelopos 20180694 (GUI, implementing the link file)
+.br
+Ereny Bady 20180143 (GUI, implementing the deletion of files and directories)
+.br
+Rania Youssef 20180236 (Implementing the change permission)
+.br
+Andrew Emad 20180140 (Implementing the files table)
