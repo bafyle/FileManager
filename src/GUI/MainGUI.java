@@ -180,6 +180,32 @@ public class MainGUI
         
         JButton addlnkeBtn = new JButton("Create a link file");
         addlnkeBtn.setBounds(10+x, 450, 200, 25);
+        addLnkBtn.addActionListener((ActionEvent e)->
+        {
+            String sourceName = JOptionPane.showInputDialog(mainPanel, "Enter the source file name");
+            if(sourceName != null)
+            {
+                String linkName = JOptionPane.showInputDialog(mainPanel, "Enter the link file name");
+                if(linkName != null)
+                {
+                    if(Foundation.isExist(linkName))
+                    {
+                        showError(mainPanel, linkName + " is already exists.");
+                    }
+                    else
+                    {
+                        try
+                        {
+                            Control.createLink(linkName, sourceName);
+                            filesTable.setModel(refreshTable());
+                        }
+                        catch(IOException error)
+                        {
+                        }
+                    }
+                } 
+            }
+        });
         mainPanel.add(addlnkeBtn);
         
         JButton chngPerm = new JButton("Change Permission");
