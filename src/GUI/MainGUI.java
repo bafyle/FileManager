@@ -178,9 +178,9 @@ public class MainGUI
         });
         mainPanel.add(delDirBtn);
         
-        JButton addlnkeBtn = new JButton("Create a link file");
-        addlnkeBtn.setBounds(10+x, 450, 200, 25);
-        addLnkBtn.addActionListener((ActionEvent e)->
+        JButton addlnkBtn = new JButton("Create a link file");
+        addlnkBtn.setBounds(10+x, 450, 200, 25);
+        addlnkBtn.addActionListener((ActionEvent e)->
         {
             String sourceName = JOptionPane.showInputDialog(mainPanel, "Enter the source file name");
             if(sourceName != null)
@@ -206,7 +206,7 @@ public class MainGUI
                 } 
             }
         });
-        mainPanel.add(addlnkeBtn);
+        mainPanel.add(addlnkBtn);
         
         JButton chngPerm = new JButton("Change Permission");
         chngPerm.setBounds(220+x, 450, 200, 25);
