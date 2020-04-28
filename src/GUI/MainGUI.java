@@ -14,6 +14,11 @@ public class MainGUI
 {
     public final static Dimension FIXED_DIMENSION = new Dimension(800, 600);
     public JTable filesTable;
+    private JFrame mainFrame;
+    public MainGUI(JFrame m)
+    {
+        mainFrame = m;
+    }
     private void showError(JPanel mainPanel, String errorMessage)
     {
         JOptionPane.showConfirmDialog(mainPanel, errorMessage, "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
@@ -75,12 +80,25 @@ public class MainGUI
         {
             e.printStackTrace();
         }
+        
         filesTable.setFont(f);
         mainPanel.add(filesTable);
         
         JScrollPane sp = new JScrollPane(filesTable);
         sp.setBounds(10, 10, 780, 300);
         mainPanel.add(sp);
+
+        // working directory
+        String place = null;
+        try
+        {
+            place = "Current directory: ";
+            place += Control.getCurrentPlace();
+        }
+        catch(IOException err){err.printStackTrace();}
+        JLabel currentPlace = new JLabel(place);
+        currentPlace.setBounds(10, 300, 800 , 30);
+        mainPanel.add(currentPlace);
         
         // Buttons
         int x = 170;
@@ -313,6 +331,15 @@ public class MainGUI
         });
         mainPanel.add(chngPerm);
         
+        JButton exitBtn = new JButton("Exit");
+        exitBtn.setBounds(690, 540, 100, 25);
+        exitBtn.addActionListener((ActionEvent e)->
+        {
+            mainFrame.setVisible(false);
+            mainFrame.dispose();
+            System.exit(0);
+        });
+        mainPanel.add(exitBtn);
         return mainPanel;
     }
 }
