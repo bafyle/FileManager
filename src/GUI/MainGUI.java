@@ -330,7 +330,7 @@ public class MainGUI
             }
         });
         mainPanel.add(chngPerm);
-        
+
         JButton exitBtn = new JButton("Exit");
         exitBtn.setBounds(690, 540, 100, 25);
         exitBtn.addActionListener((ActionEvent e)->

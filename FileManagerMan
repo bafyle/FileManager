@@ -10,7 +10,9 @@ It's using the linux commands in order to add or delete files and directories.
 .br
 This program uses OpenJDK 11, if you have any problem running this program, just install the OpenJDK 11 from the terminal(sudo apt install default-jdk)
 .br
-In order to run the program just type this command in terminal:
+In order to run the program, make sure the 'fonts' folder is in the same directory as 'FileManager.jar' file.
+.br
+To run the program just open the terminal and write:
 .br
 java -cp /path/to/FileManager.jar filemanagerjava.Main
 .SH COMMANDS
