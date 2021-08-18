@@ -1,3 +1,2 @@
 # FileManager
-a linux file manager
-a project for the university
+File manager in linux OS using java
