@@ -7,4 +7,4 @@
 - This app was built using Java and Java swing GUI library, and it was a faculty assignment.
 
 ## Images:
-![alt screenshot 1](./images/1.PNG)
+![alt screenshot 1](./docs/images/1.png)
