@@ -2,9 +2,9 @@ pwd : get where you standing now
 
 ls [attributes] : list all files and folders
 
-atrributes:
+attributes:
 -l: long listing
--F: put a symbol in the end of folders[/] and link files[@] and nothing in noraml files
+-F: put a symbol in the end of folders[/] and link files[@] and nothing in normal files
 -a: show hidden files
 you can put more that 1 attribute in the command
 
@@ -14,12 +14,12 @@ rmdir [folder name]: remove a folder
 touch [file name]: create new empty file
 
 rm [file name with his extension]: remove a file
-rm -f [file name with his extension]: forcly remove a file
+rm -f [file name with his extension]: forcing remove a file
 
 cd [folder name]: go to a folder
 folder name can be absolute or just his name if it's in the same place as pwd command tells
 
-cd .. : go up to the perant folder
+cd .. : go up to the parent folder
 this command change where you are standing, use pwd to know where you standing
 
 
@@ -40,10 +40,10 @@ numbers:
 put the file or folder name in ' ' to avoid the space error in commands
 
 
-ln: create a symboli link to files or folders
+ln: create a symbolic link to files or folders
 ln -s [source file or folder] [link name]
 -s means it's a soft link
 you can add -f or --force if there is a file with the same name of the link file
-THIS WILL OVERWRITE THE EXISTING FILE, BE CAREFULL
+THIS WILL OVERWRITE THE EXISTING FILE, BE CAREFUL
 
 

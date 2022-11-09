@@ -1,4 +1,3 @@
 In this package we will make a giant big table that have all the files
-and some buttons for creating and deleting files and folders and change permissions
-that class will have a method called run and it's returning a panel contains
-the table and the buttons
+and some buttons for creating and deleting files and folders and change permissions..
+This class has a 'run' method and it's returning a panel contains the table and the buttons
