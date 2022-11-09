@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class Foundation 
 {
-    private static final String NEWLINE = System.getProperty("line.seperator");
+    private static final String NEWLINE = System.getProperty("line.separator");
     public static ArrayList<File>Files = new ArrayList<>();
     
     public static String run(String... command) throws IOException
@@ -38,13 +38,13 @@ public class Foundation
                 output = run("ls", "-a", "-l");
             else
                 output = run("ls", "-l");
-            String newOutput[] = output.split("null");
-            for(int i = 1; i < newOutput.length; i++)
+            String []splittedOutput = output.split(NEWLINE);
+            for(int i = 1; i < splittedOutput.length; i++)
             {
-                String ff[] = newOutput[i].split(" ");
+                String fileData[] = splittedOutput[i].split(" ");
                 File newFile = new File();
-                newFile.permissions = ff[0];
-                switch(ff[0].charAt(0))
+                newFile.permissions = fileData[0];
+                switch(fileData[0].charAt(0))
                 {
                     case 'l':
                         newFile.type = 2;
@@ -62,25 +62,23 @@ public class Foundation
                 output2 = run("ls", "-a");
             else
                 output2 = run("ls");
-            String []newOutput2 = output2.split("null");
-            for(int f = 0; f < newOutput2.length; f++)
+            String []splittedOutput2 = output2.split(NEWLINE);
+            for(int f = 0; f < splittedOutput2.length; f++)
             {
-                Files.get(f).name = newOutput2[f];
-                if(newOutput2[f].charAt(0) == '.')
+                Files.get(f).name = splittedOutput2[f];
+                if(splittedOutput2[f].charAt(0) == '.')
                     Files.get(f).hidden = true;
             }
         }
         catch(IOException e)
         {
-            
+            e.printStackTrace();
         }
     }
     public static boolean isExist(String name)
     {
-        if(Files.stream().anyMatch((s) -> (name.equals(s.name)))) {
+        if(Files.stream().anyMatch((s) -> (name.equals(s.name))))
             return true;
-        }
         return false;
     }
-   
 }

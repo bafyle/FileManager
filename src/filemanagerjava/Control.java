@@ -6,9 +6,7 @@ public class Control
     public static void create(String fileName, boolean file) throws IOException
     {
         if(file)
-        {
             Foundation.run("touch", fileName);
-        }
         else
             Foundation.run("mkdir", fileName);
         Foundation.getFiles(true);
@@ -16,9 +14,7 @@ public class Control
     public static void delete(String fileName, boolean file) throws IOException
     {
         if(file)
-        {
             Foundation.run("rm", "-f", fileName);
-        }
         else
             Foundation.run("rmdir", fileName);
         Foundation.getFiles(true);
@@ -35,7 +31,7 @@ public class Control
         Foundation.getFiles(true);
     }
     
-    public static String getCurrentPlace() throws IOException
+    public static String getCWD() throws IOException
     {
         StringBuilder output = new StringBuilder(Foundation.run("pwd"));
         output.delete(output.length()-4, output.length());
