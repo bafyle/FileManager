@@ -1,10 +1,11 @@
 package GUI;
-import filemanagerjava.Control;
-import filemanagerjava.Foundation;
 import javax.swing.*;
 import javax.swing.table.*;
+
+import fileManager.File;
+import fileManager.ProcessController;
+
 import java.awt.*;
-import filemanagerjava.File;
 import java.awt.event.ActionEvent;
 import java.io.*;
 import java.util.logging.Level;
@@ -13,8 +14,9 @@ import java.util.logging.Logger;
 public class UI
 {
     public final static Dimension FIXED_DIMENSION = new Dimension(800, 600);
-    public JTable filesTable;
+    private JTable filesTable;
     private JFrame mainFrame;
+    private ProcessController pc = new ProcessController();
     public UI(JFrame m)
     {
         mainFrame = m;
@@ -25,38 +27,22 @@ public class UI
     }
     private DefaultTableModel refreshTable()
     {
-        DefaultTableModel returningModel = new DefaultTableModel();
-        Foundation.getFiles(true);
-        returningModel.addColumn("Name");
-        returningModel.addColumn("Permissions");
-        returningModel.addColumn("Type");
-        returningModel.addColumn("Hidden");
-        for(File s : Foundation.Files) 
+        DefaultTableModel tableModel = new DefaultTableModel();
+        pc.refreshFilesList(true);
+        tableModel.addColumn("Name");
+        tableModel.addColumn("Permissions");
+        tableModel.addColumn("Type");
+        tableModel.addColumn("Hidden");
+        for(File file : pc.getFiles()) 
         {
-            String type = null;
-            switch(s.type)
-            {
-                case 0:
-                    type = "File";
-                    break;
-                case 1:
-                    type = "Directory";
-                    break;
-                case 2:
-                    type = "Link File";
-                    break;
-                default:
-                    type = "Unknown";
-            }
-            String hidden = null;
-            if(s.hidden)
+            String type = file.getType().getAction();
+            String hidden = "No";
+            if(file.isHidden())
                 hidden = "Yes";
-            else
-                hidden = "No";
-            String []row = {s.name, s.permissions, type, hidden};
-            returningModel.addRow(row);
+            String []row = {file.getName(), file.getPermissions(), type, hidden};
+            tableModel.addRow(row);
         }
-        return returningModel;
+        return tableModel;
     }
     public JPanel run()
     {
@@ -93,7 +79,7 @@ public class UI
         try
         {
             place = "Current directory: ";
-            place += Control.getCWD();
+            place += pc.getCWD();
         }
         catch(IOException err){err.printStackTrace();}
         JLabel currentPlace = new JLabel(place);
@@ -102,31 +88,31 @@ public class UI
         
         // Buttons
         int x = 170;
-        JButton addFileBtn = new JButton("Create new file");
-        addFileBtn.setBounds(10 +x, 350, 200, 25);
-        addFileBtn.addActionListener((ActionEvent e)->
+        JButton createFileButton = new JButton("Create new file");
+        createFileButton.setBounds(10 +x, 350, 200, 25);
+        createFileButton.addActionListener((ActionEvent e)->
         {
             String fileName = JOptionPane.showInputDialog(mainPanel, "Enter the file name");
             if(fileName != null)
             {
-                if(!Foundation.isExist(fileName))
+                if(!pc.isExist(fileName))
                 {
                     try{
-                    Control.create(fileName, true);
+                    pc.createFile(fileName);
                     filesTable.setModel(refreshTable());
                     }
-                    catch(IOException error){}
+                    catch(IOException error){error.printStackTrace();}
                 }
                 else
                     showError(mainPanel, "File already exists");
                 
             }
         });
-        mainPanel.add(addFileBtn);
+        mainPanel.add(createFileButton);
         
-        JButton delFileBtn = new JButton("Delete file");
-        delFileBtn.setBounds(220+x, 350, 200, 25);
-        delFileBtn.addActionListener((ActionEvent e)->
+        JButton deleteFileButton = new JButton("Delete file");
+        deleteFileButton.setBounds(220+x, 350, 200, 25);
+        deleteFileButton.addActionListener((ActionEvent e)->
         {
             if(filesTable.getSelectedRow() == -1)
             {
@@ -143,35 +129,35 @@ public class UI
                     int option = JOptionPane.showConfirmDialog(mainPanel, "Are you sure you want to delete " + fileName, "", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
                     if(option == 0)
                     {
-                        try{Control.delete(fileName, true);}catch(IOException error){Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, error);}
+                        try{pc.deleteFile(fileName);}catch(IOException error){Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, error);}
                         filesTable.setModel(refreshTable());
                     }
                 }
             }
         });
-        mainPanel.add(delFileBtn);
+        mainPanel.add(deleteFileButton);
 
-        JButton addDirBtn = new JButton("Create new directory");
-        addDirBtn.setBounds(10+x, 400, 200, 25);
-        addDirBtn.addActionListener((ActionEvent e)->
+        JButton createDirectoryButton = new JButton("Create new directory");
+        createDirectoryButton.setBounds(10+x, 400, 200, 25);
+        createDirectoryButton.addActionListener((ActionEvent e)->
         {
-            String fileName = JOptionPane.showInputDialog(mainPanel, "Enter the file name");
-            if(fileName != null)
+            String dirName = JOptionPane.showInputDialog(mainPanel, "Enter the file name");
+            if(dirName != null)
             {
-                if(!Foundation.isExist(fileName))
+                if(!pc.isExist(dirName))
                 {
-                    try{Control.create(fileName, false);}catch(IOException error){}
+                    try{pc.createDirectory(dirName);}catch(IOException error){}
                     filesTable.setModel(refreshTable());
                 }
                 else
                     JOptionPane.showConfirmDialog(mainPanel, "Directory already exist", "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
             }
         });
-        mainPanel.add(addDirBtn);
+        mainPanel.add(createDirectoryButton);
         
-        JButton delDirBtn = new JButton("Delete directory");
-        delDirBtn.setBounds(220+x, 400, 200, 25);
-        delDirBtn.addActionListener((ActionEvent e)->
+        JButton deleteDirectoryButton = new JButton("Delete directory");
+        deleteDirectoryButton.setBounds(220+x, 400, 200, 25);
+        deleteDirectoryButton.addActionListener((ActionEvent e)->
         {
             if(filesTable.getSelectedRow() == -1)
             {
@@ -188,17 +174,17 @@ public class UI
                     int option = JOptionPane.showConfirmDialog(mainPanel, "Are you sure you want to delete " + fileName, "", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
                     if(option == 0)
                     {
-                        try{Control.delete(fileName, false);}catch(IOException error){Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, error);}
+                        try{pc.deleteDirectory(fileName);}catch(IOException error){Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, error);}
                         filesTable.setModel(refreshTable());
                     }
                 }
             }
         });
-        mainPanel.add(delDirBtn);
+        mainPanel.add(deleteDirectoryButton);
         
-        JButton addlnkBtn = new JButton("Create a link file");
-        addlnkBtn.setBounds(10+x, 450, 200, 25);
-        addlnkBtn.addActionListener((ActionEvent e)->
+        JButton createLinkButton = new JButton("Create a link file");
+        createLinkButton.setBounds(10+x, 450, 200, 25);
+        createLinkButton.addActionListener((ActionEvent e)->
         {
             String sourceName = JOptionPane.showInputDialog(mainPanel, "Enter the source file name");
             if(sourceName != null)
@@ -206,7 +192,7 @@ public class UI
                 String linkName = JOptionPane.showInputDialog(mainPanel, "Enter the link file name");
                 if(linkName != null)
                 {
-                    if(Foundation.isExist(linkName))
+                    if(pc.isExist(linkName))
                     {
                         showError(mainPanel, linkName + " is already exists.");
                     }
@@ -214,21 +200,22 @@ public class UI
                     {
                         try
                         {
-                            Control.createLink(linkName, sourceName);
+                            pc.createLink(linkName, sourceName);
                             filesTable.setModel(refreshTable());
                         }
                         catch(IOException error)
                         {
+                            error.printStackTrace();
                         }
                     }
                 } 
             }
         });
-        mainPanel.add(addlnkBtn);
+        mainPanel.add(createLinkButton);
         
-        JButton chngPerm = new JButton("Change Permission");
-        chngPerm.setBounds(220+x, 450, 200, 25);
-        chngPerm.addActionListener((ActionEvent e)->
+        JButton changePermissionsButton = new JButton("Change Permission");
+        changePermissionsButton.setBounds(220+x, 450, 200, 25);
+        changePermissionsButton.addActionListener((ActionEvent e)->
         {
             if(filesTable.getSelectedRow() == -1)
             {
@@ -319,18 +306,18 @@ public class UI
                     }
                     try
                     {
-                        Control.changePermission(fileName, perm);
+                        pc.changePermission(fileName, perm);
                         filesTable.setModel(refreshTable());
                     }
                     catch(IOException error)
                     {
-                        
+                        error.printStackTrace();
                     }
                     innerFrame.dispose();
                 });
             }
         });
-        mainPanel.add(chngPerm);
+        mainPanel.add(changePermissionsButton);
 
         JButton exitBtn = new JButton("Exit");
         exitBtn.setBounds(690, 540, 100, 25);
